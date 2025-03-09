@@ -1,35 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+//import bootstrap css.
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from "react";
+import {
+  Container,
+  Card,
+  InputGroup,
+  FormControl,
+  Button,
+  Row,
+} from "react-bootstrap";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const moods = [
+    "Happy",
+    "Sad",
+    "Chill",
+    "Energetic",
+    "Romantic",
+    "Focused",
+    "Party",
+  ];
+  const [mood, setMood] = useState("");
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="app">
+        <Container>
+          {/*the input group is where the inputs (button, datalist field) will live.*/}
+          <InputGroup className="mb-3" size="lg">
+            <FormControl
+              className="form-control"
+              list="moodList"
+              type="input"
+              placeholder="Type to Search..."
+              onKeyDown={(e) => {
+                if (e.key == "Enter") {
+                  console.log("User pressed enter");
+                }
+              }}
+              onChange={(e) => setMood(e.target.value)}
+            ></FormControl>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() =>
+                console.log(`User pressed button, and mood is ${mood}`)
+              }
+            >
+              Search
+            </button>
+            <datalist id="moodList">
+              {moods.map((mood, i) => (
+                <option value={mood} key={i}></option>
+              ))}
+            </datalist>
+          </InputGroup>
+        </Container>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
