@@ -9,7 +9,6 @@ const ClientSecretKey = "513d6ea70d55407c9cd2299e3f3cb0c8";
 
 function App() {
   const [accessToken, setAccessToken] = useState("");
-  const topTrackIDs = [];
   //get data - maybe we can move it to a different method?
   useEffect(() => {
     //API access token - process from spotify.
@@ -62,7 +61,9 @@ function App() {
       searchParameters
     )
       .then((response) => response.json())
-      .then((data) => console.log(data.tracks));
+      .then((data) => {
+        return data.tracks;
+      });
   }
 
   //---code:
