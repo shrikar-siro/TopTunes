@@ -1,21 +1,81 @@
 import "./App.css";
 //import bootstrap css.
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 //create constants for ClientID and Client Secret Key
 const ClientID = "aca121a33cce401a863f6bc07ea333bf";
 const ClientSecretKey = "513d6ea70d55407c9cd2299e3f3cb0c8";
 
 function App() {
+  const [accessToken, setAccessToken] = useState("");
+  const topTrackIDs = [];
+  //get data - maybe we can move it to a different method?
+  useEffect(() => {
+    //API access token - process from spotify.
+    var authParameters = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body:
+        "grant_type=client_credentials&client_id=" +
+        ClientID +
+        "&client_secret=" +
+        ClientSecretKey,
+    };
+    fetch("https://accounts.spotify.com/api/token", authParameters)
+      .then((result) => result.json())
+      //printing out the data (results.json) we get.
+      .then((data) => setAccessToken(data.access_token));
+  }, []);
+
+  //create async function search for handling user parameters.
+  //this function needs to be asynchronous because we're going to have many fetch statements in it, and we
+  //need each statement to "wait its turn" before executing.
+
+  async function searchFor() {
+    console.log(`Searching for ${artist}...`);
+
+    var searchParameters = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + accessToken,
+      },
+    };
+    //use get request to get the artist ID.
+    var artistID = await fetch(
+      "https://api.spotify.com/v1/search?q=" + artist + "&type=artist",
+      searchParameters
+    )
+      .then((result) => result.json())
+      .then((data) => {
+        return data.artists.items[0].id;
+      });
+    //use another get request to get the most popular tracks of the artist using their artist ID.
+    var topTracks = await fetch(
+      "https://api.spotify.com/v1/artists/" +
+        artistID +
+        "/top-tracks" +
+        "?market=US&limit=20",
+      searchParameters
+    )
+      .then((response) => response.json())
+      .then((data) => console.log(data.tracks));
+  }
+
+  //---code:
+  //
+  //
   const moods = [
     "Select",
     "Happy",
     "Sad",
     "Chill",
     "Energetic",
-    "Romantic",
-    "Focused",
+    "Romance",
+    "Work-Out",
     "Party",
   ];
   const [mood, setMood] = useState("");
@@ -49,11 +109,7 @@ function App() {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={() =>
-                console.log(
-                  `User pressed button, with a mood of ${mood} and artist of ${artist}`
-                )
-              }
+              onClick={searchFor}
             >
               Search
             </button>
@@ -75,4 +131,5 @@ function App() {
     </>
   );
 }
+
 export default App;
