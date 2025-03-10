@@ -87,7 +87,11 @@ function App() {
   return (
     <>
       <div className="app w-75 mx-auto row justify-content-center">
-        <p className="h1 p-3">TopTunes</p>
+        <p className="h1 p-1">TopTunes</p>
+        <p className="h4 mb-4 text-secondary">
+          See your favorite artist's top tracks. Click on each track for
+          additional information.
+        </p>
         <div className="contianer-fluid">
           {/*the input group is where the inputs (button, datalist field) will live.*/}
           <div className="input-group mb-3 input-group-lg">
