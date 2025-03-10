@@ -87,7 +87,7 @@ function App() {
   return (
     <>
       <div className="app w-75 mx-auto row justify-content-center">
-        <p className="h1 p-3">Top Tracks</p>
+        <p className="h1 p-3">TopTunes</p>
         <div className="contianer-fluid">
           {/*the input group is where the inputs (button, datalist field) will live.*/}
           <div className="input-group mb-3 input-group-lg">
@@ -110,19 +110,19 @@ function App() {
 
         {/** making a new container -> this will hold the albums as cards for the specific artist they choose.*/}
         <div className="container-fluid align-items-center">
-          <div className="mx-auto row row-cols-4 gap-auto">
+          <div className="mx-auto row row-cols-3 gap-auto">
             {tracks
               .sort((a, b) => b.popularity - a.popularity)
               .map((track, i) => {
                 return (
-                  <div className="card p-3" key={i}>
+                  <div className="card" key={i}>
                     <img
                       src={track.album.images[0].url}
                       className="card-img-top"
                     ></img>
                     <div className="card-body">
-                      <p className="h3 card-title">{track.name}</p>
-                      <p className="h5 card-text">
+                      <p className="h4 card-title">{track.name}</p>
+                      <p className="card-text">
                         Popularity: {track.popularity}
                       </p>
                     </div>
