@@ -2,6 +2,7 @@ import "./App.css";
 //import bootstrap css.
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 //create constants for ClientID and Client Secret Key
 const ClientID = "aca121a33cce401a863f6bc07ea333bf";
@@ -10,6 +11,7 @@ const ClientSecretKey = "513d6ea70d55407c9cd2299e3f3cb0c8";
 function App() {
   const [accessToken, setAccessToken] = useState("");
   const [tracks, setTracks] = useState([]);
+  const [trackName, setTrackName] = useState("");
   //get data - maybe we can move it to a different method?
   useEffect(() => {
     //API access token - process from spotify.
@@ -119,18 +121,26 @@ function App() {
               .sort((a, b) => b.popularity - a.popularity)
               .map((track, i) => {
                 return (
-                  <div className="card p-0" key={i}>
-                    <img
-                      src={track.album.images[1].url}
-                      className="card-img-top border border-dark"
-                    ></img>
-                    <div className="card-body">
-                      <p className="h4 card-title">{track.name}</p>
-                      <p className="card-text">
-                        <b>Popularity: </b> {track.popularity}/100
-                      </p>
+                  <Link to={`/tracks/${track.name}`} key={i} className="link">
+                    <div
+                      className="card p-0"
+                      key={i}
+                      onClick={() => setTrackName(track.name)}
+                    >
+                      <img
+                        src={track.album.images[1].url}
+                        className="card-img-top border border-dark"
+                      ></img>
+                      <div className="card-body">
+                        <p className="h5 card-title truncate-text">
+                          {track.name}
+                        </p>
+                        <p className="card-text">
+                          <b>Popularity: </b> {track.popularity}/100
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
           </div>
