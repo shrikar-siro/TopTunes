@@ -66,19 +66,6 @@ function App() {
         // console.log(data);
         setTracks(data.tracks);
       });
-
-    if (tracks.length > 0) {
-      tracks.sort((t1, t2) => {
-        if (t1.popularity > t2.popularity) {
-          return 1;
-        }
-        if (t2.popularity > t1.popularity) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-    }
     console.log(tracks);
   }
 
@@ -124,22 +111,24 @@ function App() {
         {/** making a new container -> this will hold the albums as cards for the specific artist they choose.*/}
         <div className="container-fluid align-items-center">
           <div className="mx-auto row row-cols-4 gap-auto">
-            {tracks.map((track, i) => {
-              return (
-                <div className="card p-3" key={i}>
-                  <img
-                    src={track.album.images[0].url}
-                    className="card-img-top"
-                  ></img>
-                  <div className="card-body">
-                    <p className="h3 card-title">{track.name}</p>
-                    <p className="h5 card-text">
-                      Popularity: {track.popularity}
-                    </p>
+            {tracks
+              .sort((a, b) => b.popularity - a.popularity)
+              .map((track, i) => {
+                return (
+                  <div className="card p-3" key={i}>
+                    <img
+                      src={track.album.images[0].url}
+                      className="card-img-top"
+                    ></img>
+                    <div className="card-body">
+                      <p className="h3 card-title">{track.name}</p>
+                      <p className="h5 card-text">
+                        Popularity: {track.popularity}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </div>
       </div>
