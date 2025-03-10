@@ -69,17 +69,16 @@ function App() {
   //---code:
   //
   //
-  const moods = [
-    "Select",
-    "Happy",
-    "Sad",
-    "Chill",
-    "Energetic",
-    "Romance",
-    "Work-Out",
-    "Party",
-  ];
-  const [mood, setMood] = useState("");
+  // const moods = [
+  //   "Select",
+  //   "Happy",
+  //   "Sad",
+  //   "Chill",
+  //   "Energetic",
+  //   "Romance",
+  //   "Work-Out",
+  //   "Party",
+  // ];
   const [artist, setArtist] = useState("");
 
   return (
@@ -89,17 +88,6 @@ function App() {
         <div className="contianer-fluid">
           {/*the input group is where the inputs (button, datalist field) will live.*/}
           <div className="input-group mb-3 input-group-lg">
-            <select
-              className="form-select"
-              aria-placeholder="Type to Search..."
-              onChange={(e) => setMood(e.target.value)}
-            >
-              {moods.map((mood, i) => (
-                <option value={mood} key={i} className="text-center">
-                  {mood}
-                </option>
-              ))}
-            </select>
             <input
               className="form-control p-3 text-center"
               type="text"
