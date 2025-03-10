@@ -110,20 +110,20 @@ function App() {
 
         {/** making a new container -> this will hold the albums as cards for the specific artist they choose.*/}
         <div className="container-fluid align-items-center">
-          <div className="mx-auto row row-cols-3 gap-auto">
+          <div className="mx-auto row row-cols-3 g-3">
             {tracks
               .sort((a, b) => b.popularity - a.popularity)
               .map((track, i) => {
                 return (
-                  <div className="card" key={i}>
+                  <div className="card p-0" key={i}>
                     <img
-                      src={track.album.images[0].url}
-                      className="card-img-top"
+                      src={track.album.images[1].url}
+                      className="card-img-top border border-dark"
                     ></img>
                     <div className="card-body">
                       <p className="h4 card-title">{track.name}</p>
                       <p className="card-text">
-                        Popularity: {track.popularity}
+                        <b>Popularity: </b> {track.popularity}/100
                       </p>
                     </div>
                   </div>
