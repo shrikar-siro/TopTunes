@@ -9,6 +9,7 @@ const ClientSecretKey = "513d6ea70d55407c9cd2299e3f3cb0c8";
 
 function App() {
   const [accessToken, setAccessToken] = useState("");
+  const [tracks, setTracks] = useState([]);
   //get data - maybe we can move it to a different method?
   useEffect(() => {
     //API access token - process from spotify.
@@ -62,8 +63,23 @@ function App() {
     )
       .then((response) => response.json())
       .then((data) => {
-        return data.tracks;
+        // console.log(data);
+        setTracks(data.tracks);
       });
+
+    if (tracks.length > 0) {
+      tracks.sort((t1, t2) => {
+        if (t1.popularity > t2.popularity) {
+          return 1;
+        }
+        if (t2.popularity > t1.popularity) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+    }
+    console.log(tracks);
   }
 
   //---code:
@@ -84,12 +100,12 @@ function App() {
   return (
     <>
       <div className="app w-75 mx-auto row justify-content-center">
-        <p className="h1 p-3">Modify: Songs By Mood</p>
+        <p className="h1 p-3">Top Tracks</p>
         <div className="contianer-fluid">
           {/*the input group is where the inputs (button, datalist field) will live.*/}
           <div className="input-group mb-3 input-group-lg">
             <input
-              className="form-control p-3 text-center"
+              className="form-control p-3"
               type="text"
               placeholder="Type artist name..."
               id="artistName"
@@ -106,14 +122,24 @@ function App() {
         </div>
 
         {/** making a new container -> this will hold the albums as cards for the specific artist they choose.*/}
-        <div className="container-fluid">
-          <div className="mx-auto row row-cols-4 gap-3">
-            <div className="card p-3">
-              <img src="..." className="card-img-top"></img>
-              <div className="card-body">
-                <p className="h5 card-title">Album Name Here</p>
-              </div>
-            </div>
+        <div className="container-fluid align-items-center">
+          <div className="mx-auto row row-cols-4 gap-auto">
+            {tracks.map((track, i) => {
+              return (
+                <div className="card p-3" key={i}>
+                  <img
+                    src={track.album.images[0].url}
+                    className="card-img-top"
+                  ></img>
+                  <div className="card-body">
+                    <p className="h3 card-title">{track.name}</p>
+                    <p className="h5 card-text">
+                      Popularity: {track.popularity}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
