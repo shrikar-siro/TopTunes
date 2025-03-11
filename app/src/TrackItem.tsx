@@ -68,23 +68,25 @@ function TrackItem() {
 
   return (
     <>
-      <div className="container-fluid w-75">
+      <div className="container-fluid w-75 align-items-center">
         <p className="h1 p-3 text-start text-weight-bold">{information.name}</p>
-        <div className="mx-auto d-flex flex-row-reverse">
+        <hr />
+        <div className="mx-auto d-flex flex-row-reverse p-3">
           <div className="container-fluid">
             <p className="h2">Track Details:</p>
             <ul className="list-group list-group-flush text-start w-auto">
-              <li className="list-group-item h5">
-                Album Name: {information.album.name}
+              <li className="list-group-item h5 p-3">
+                <b>Album Name: </b> {information.album.name}
               </li>
-              <li className="list-group-item h5">
-                Artist: {information.artists[0].name}
+              <li className="list-group-item h5 p-3">
+                <b>Main Artist: </b> {information.artists[0].name}
               </li>
-              <li className="list-group-item h5">
-                Track Number: {information.track_number}
+              <li className="list-group-item h5 p-3">
+                <b>Track Number: </b>
+                {information.track_number}
               </li>
-              <li className="list-group-item h5">
-                Song URL:{" "}
+              <li className="list-group-item h5 p-3">
+                <b>Song URL: </b>{" "}
                 <a
                   href={information.external_urls.spotify}
                   className="link-primary h6"
@@ -95,20 +97,30 @@ function TrackItem() {
               </li>
               <li className="list-group-item h5 p-0"></li>
             </ul>
-            <a
-              className="btn btn-primary"
-              href={information.artists[0].external_urls.spotify}
-              role="button"
-              target="_blank"
-            >
-              See Artist Bio
-            </a>
+            <div className="container-fluid d-flex flex-row justify-content-center p-2 gap-2 text-center">
+              <a
+                className="btn btn-primary p-2"
+                href={information.artists[0].external_urls.spotify}
+                role="button"
+                target="_blank"
+              >
+                Artist Profile
+              </a>
+              <a
+                className="btn btn-primary p-2"
+                href={information.album.external_urls.spotify}
+                role="button"
+                target="_blank"
+              >
+                Other Album Songs
+              </a>
+            </div>
           </div>
           <div className="container-fluid">
             <img
               src={information.album.images[0].url}
               alt="album image"
-              className="img-fluid"
+              className="img-fluid mx-auto"
             ></img>
           </div>
         </div>

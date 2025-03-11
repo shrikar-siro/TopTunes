@@ -34,11 +34,11 @@
 
 .card {
   padding: 2em;
-  transition: all 0.3s;
+  transition: all 0.5s;
 }
 .card:hover {
   background-color: rgb(215, 213, 213);
-  outline: 0.1em solid rgb(208, 207, 207);
+  transform: scale(1.02);
 }
 
 .read-the-docs {
