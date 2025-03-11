@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 //create constants for ClientID and Client Secret Key
-const ClientID = "aca121a33cce401a863f6bc07ea333bf";
-const ClientSecretKey = "513d6ea70d55407c9cd2299e3f3cb0c8";
+export const ClientID = "aca121a33cce401a863f6bc07ea333bf";
+export const ClientSecretKey = "513d6ea70d55407c9cd2299e3f3cb0c8";
 
 function App() {
   const [accessToken, setAccessToken] = useState("");
@@ -121,15 +121,17 @@ function App() {
               .sort((a, b) => b.popularity - a.popularity)
               .map((track, i) => {
                 return (
-                  <Link to={`/tracks/${track.name}`} key={i} className="link">
+                  <Link to={`/tracks/${track.id}`} key={i} className="link">
                     <div
                       className="card p-0"
                       key={i}
-                      onClick={() => setTrackName(track.name)}
+                      onClick={() => {
+                        setTrackName(track.name);
+                      }}
                     >
                       <img
                         src={track.album.images[1].url}
-                        className="card-img-top border border-dark"
+                        className="card-img-top border border-dark img-fluid"
                       ></img>
                       <div className="card-body">
                         <p className="h5 card-title truncate-text">
