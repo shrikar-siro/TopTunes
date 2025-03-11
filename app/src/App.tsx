@@ -68,7 +68,11 @@ function App() {
         // console.log(data);
         setTracks(data.tracks);
       });
-    console.log(tracks);
+    if (tracks.length > 0) {
+      console.log(tracks);
+    } else {
+      return <p>Loading...</p>;
+    }
   }
 
   //---code:
