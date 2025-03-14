@@ -11,7 +11,8 @@ export const ClientSecretKey = "513d6ea70d55407c9cd2299e3f3cb0c8";
 function App() {
   const [accessToken, setAccessToken] = useState("");
   const [tracks, setTracks] = useState([]);
-  const [trackName, setTrackName] = useState("");
+  const [id, setID] = useState(null);
+
   //get data - maybe we can move it to a different method?
   useEffect(() => {
     //API access token - process from spotify.
@@ -36,58 +37,51 @@ function App() {
   //this function needs to be asynchronous because we're going to have many fetch statements in it, and we
   //need each statement to "wait its turn" before executing.
 
-  async function searchFor() {
-    console.log(`Searching for ${artist}...`);
+  var searchParameters = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + accessToken,
+    },
+  };
 
-    var searchParameters = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + accessToken,
-      },
-    };
+  //useMemo takes in two parameters - what is being memoized, and what it depends on. In this case, searchParameters depends on itself.
+
+  async function getArtistID() {
     //use get request to get the artist ID.
-    var artistID = await fetch(
+    var response = await fetch(
       "https://api.spotify.com/v1/search?q=" + artist + "&type=artist",
       searchParameters
-    )
-      .then((result) => result.json())
-      .then((data) => {
-        return data.artists.items[0].id;
-      });
+    );
+
+    const data = await response.json();
+    setID(data.artists.items[0].id);
+    return data.artists.items[0].id;
+  }
+
+  async function searchFor(artistID: String) {
     //use another get request to get the most popular tracks of the artist using their artist ID.
-    var topTracks = await fetch(
+    var response = await fetch(
       "https://api.spotify.com/v1/artists/" +
         artistID +
         "/top-tracks" +
         "?market=US&limit=20",
       searchParameters
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log(data);
-        setTracks(data.tracks);
-      });
-    if (tracks.length > 0) {
-      console.log(tracks);
-    } else {
-      return <p>Loading...</p>;
+    );
+
+    const data = await response.json();
+    setTracks(data.tracks);
+    console.log(data.tracks);
+  }
+
+  async function handleSearch() {
+    const artistID = await getArtistID();
+    console.log("ArtistID: " + artistID);
+    if (artistID) {
+      searchFor(artistID);
     }
   }
 
-  //---code:
-  //
-  //
-  // const moods = [
-  //   "Select",
-  //   "Happy",
-  //   "Sad",
-  //   "Chill",
-  //   "Energetic",
-  //   "Romance",
-  //   "Work-Out",
-  //   "Party",
-  // ];
   const [artist, setArtist] = useState("");
 
   return (
@@ -111,7 +105,7 @@ function App() {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={searchFor}
+              onClick={handleSearch}
             >
               Search
             </button>
@@ -126,13 +120,7 @@ function App() {
               .map((track, i) => {
                 return (
                   <Link to={`/tracks/${track.id}`} key={i} className="link">
-                    <div
-                      className="card p-0"
-                      key={i}
-                      onClick={() => {
-                        setTrackName(track.name);
-                      }}
-                    >
+                    <div className="card p-0" key={i}>
                       <img
                         src={track.album.images[1].url}
                         className="card-img-top border border-dark img-fluid"

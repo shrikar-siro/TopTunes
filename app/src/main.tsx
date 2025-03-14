@@ -12,6 +12,10 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
+    path: "/artists/:id",
+    element: <App />,
+  },
+  {
     path: "/tracks/:id",
     element: <TrackItem />,
   },
