@@ -3,6 +3,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 //create constants for ClientID and Client Secret Key
 export const ClientID = "aca121a33cce401a863f6bc07ea333bf";
@@ -11,7 +12,9 @@ export const ClientSecretKey = "513d6ea70d55407c9cd2299e3f3cb0c8";
 function App() {
   const [accessToken, setAccessToken] = useState("");
   const [tracks, setTracks] = useState([]);
-  const [id, setID] = useState(null);
+  const [artistID, setID] = useState(null);
+
+  const { id } = useParams();
 
   //get data - maybe we can move it to a different method?
   useEffect(() => {
@@ -72,13 +75,32 @@ function App() {
     const data = await response.json();
     setTracks(data.tracks);
     console.log(data.tracks);
+    console.log(data.tracks.length);
+    if (data.tracks.length == 0) {
+      return (
+        <>
+          <div className="alert alert-warning">
+            Your artist has no songs on spotify. Enter another artist and try
+            again.
+          </div>
+        </>
+      );
+    }
   }
 
   async function handleSearch() {
     const artistID = await getArtistID();
-    console.log("ArtistID: " + artistID);
     if (artistID) {
+      console.log(artistID);
       searchFor(artistID);
+    } else {
+      return (
+        <>
+          <div className="alert alert-warning">
+            Invalid artist name. Please enter the name correctly and try again.
+          </div>
+        </>
+      );
     }
   }
 

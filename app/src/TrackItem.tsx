@@ -46,19 +46,21 @@ function TrackItem() {
 
     //with the ID, we make another request to the API for the track data.
 
-    var info = await fetch(
+    var response = await fetch(
       "https://api.spotify.com/v1/tracks/" + id + "?market=US",
       searchParameters
-    )
-      .then((response) => response.json())
-      .then((data) => setInformation(data));
+    );
+
+    const data = await response.json();
+    setInformation(data);
+    return data;
   }
 
   useEffect(() => {
     if (!accessToken || !id) {
-      console.log("information isn't there yet!");
       return;
     }
+    //calling method in useEffect, will get called again if id or accessToken changes.
     trackInfo();
     //we pass accessToken and id as parameters to let the computer know to update state when accessToken changes.
   }, [accessToken, id]);
