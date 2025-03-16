@@ -88,6 +88,10 @@ function TrackItem() {
                 {information.track_number}
               </li>
               <li className="list-group-item h5 p-3">
+                <b>Duration: </b>
+                {Math.ceil(information.duration_ms / 60000)} minutes
+              </li>
+              <li className="list-group-item h5 p-3">
                 <b>Song URL: </b>{" "}
                 <a
                   href={information.external_urls.spotify}
