@@ -3,7 +3,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 //create constants for ClientID and Client Secret Key
 export const ClientID = "aca121a33cce401a863f6bc07ea333bf";
@@ -11,8 +11,9 @@ export const ClientSecretKey = "513d6ea70d55407c9cd2299e3f3cb0c8";
 
 function App() {
   const [accessToken, setAccessToken] = useState("");
-  const [tracks, setTracks] = useState([]);
   const [artistID, setID] = useState(null);
+  const [tracks, setTracks] = useState([]);
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -73,6 +74,7 @@ function App() {
     );
 
     const data = await response.json();
+    localStorage.setItem(`tracks-${artistID}`, JSON.stringify(data.tracks));
     setTracks(data.tracks);
     console.log(data.tracks);
     console.log(data.tracks.length);
@@ -91,8 +93,16 @@ function App() {
   async function handleSearch() {
     const artistID = await getArtistID();
     if (artistID) {
+      const savedTracks = localStorage.getItem(`tracks-${artistID}`);
       console.log(artistID);
-      searchFor(artistID);
+      console.log(`Saved Tracks: ${savedTracks}\n`);
+      if (savedTracks) {
+        setTracks(JSON.parse(savedTracks));
+        navigate(`/artists/${artistID}`);
+      } else {
+        searchFor(artistID);
+        navigate(`/artists/${artistID}`);
+      }
     } else {
       return (
         <>
@@ -134,7 +144,7 @@ function App() {
           </div>
         </div>
 
-        {/** making a new container -> this will hold the albums as cards for the specific artist they choose.*/}
+        {/** making a new container -> this will hold the top tracks as cards for the specific artist they choose.*/}
         <div className="container-fluid align-items-center">
           <div className="mx-auto row row-cols-3 g-3">
             {tracks
