@@ -37,6 +37,14 @@ function App() {
       .then((data) => setAccessToken(data.access_token));
   }, []);
 
+  useEffect(() => {
+    const data = localStorage.getItem(`tracks-${id}`);
+    if (data) {
+      setTracks(JSON.parse(data));
+      navigate(`/artists/${id}`);
+    }
+  }, []);
+
   //create async function search for handling user parameters.
   //this function needs to be asynchronous because we're going to have many fetch statements in it, and we
   //need each statement to "wait its turn" before executing.
@@ -95,7 +103,6 @@ function App() {
     if (artistID) {
       const savedTracks = localStorage.getItem(`tracks-${artistID}`);
       console.log(artistID);
-      console.log(`Saved Tracks: ${savedTracks}\n`);
       if (savedTracks) {
         setTracks(JSON.parse(savedTracks));
         navigate(`/artists/${artistID}`);
