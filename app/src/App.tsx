@@ -1,7 +1,7 @@
 import "./App.css";
 //import bootstrap css.
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -14,6 +14,7 @@ function App() {
   const [artistID, setID] = useState(null);
   const [tracks, setTracks] = useState([]);
   const navigate = useNavigate();
+  const nameRef = useRef<HTMLInputElement>(null);
 
   const { id } = useParams();
 
@@ -39,8 +40,12 @@ function App() {
 
   useEffect(() => {
     const data = localStorage.getItem(`tracks-${id}`);
+    const artistName = localStorage.getItem("search-artist-name");
     if (data) {
       setTracks(JSON.parse(data));
+      if (artistName && document.getElementById(artistName) == null) {
+        setArtist(artistName);
+      }
       navigate(`/artists/${id}`);
     }
   }, []);
@@ -83,6 +88,7 @@ function App() {
 
     const data = await response.json();
     localStorage.setItem(`tracks-${artistID}`, JSON.stringify(data.tracks));
+    localStorage.setItem("search-artist-name", artist);
     setTracks(data.tracks);
     console.log(data.tracks);
     console.log(data.tracks.length);
@@ -102,9 +108,16 @@ function App() {
     const artistID = await getArtistID();
     if (artistID) {
       const savedTracks = localStorage.getItem(`tracks-${artistID}`);
+      const theArtist = localStorage.setItem("search-artist-name", artist);
       console.log(artistID);
       if (savedTracks) {
+        const artistName = localStorage.getItem("search-artist-name");
+        if (artistName) {
+          setArtist(artistName);
+        }
+        console.log("saved tracks found!!");
         setTracks(JSON.parse(savedTracks));
+        console.log(artistName);
         navigate(`/artists/${artistID}`);
       } else {
         searchFor(artistID);
@@ -139,6 +152,8 @@ function App() {
               type="text"
               placeholder="Type artist name..."
               id="artistName"
+              ref={nameRef}
+              value={artist}
               onChange={(e) => setArtist(e.target.value)}
             ></input>
             <button
