@@ -73,6 +73,7 @@ function App() {
 
     const data = await response.json();
     setID(data.artists.items[0].id);
+    console.log(artistID);
     return data.artists.items[0].id;
   }
 
@@ -108,7 +109,7 @@ function App() {
     const artistID = await getArtistID();
     if (artistID) {
       const savedTracks = localStorage.getItem(`tracks-${artistID}`);
-      const theArtist = localStorage.setItem("search-artist-name", artist);
+      // const theArtist = localStorage.setItem("search-artist-name", artist);
       console.log(artistID);
       if (savedTracks) {
         const artistName = localStorage.getItem("search-artist-name");
