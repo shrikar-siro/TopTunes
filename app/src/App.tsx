@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 
 //create constants for ClientID and Client Secret Key
-export const ClientID = "aca121a33cce401a863f6bc07ea333bf";
-export const ClientSecretKey = "513d6ea70d55407c9cd2299e3f3cb0c8";
+export const ClientID = import.meta.env.VITE_CLIENT_ID;
+export const ClientSecretKey = import.meta.env.VITE_CLIENT_SECRET_KEY;
 
 function App() {
   const [accessToken, setAccessToken] = useState("");
