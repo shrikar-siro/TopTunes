@@ -12,7 +12,7 @@ export const ClientSecretKey = import.meta.env.VITE_CLIENT_SECRET_KEY;
 function App() {
   const [accessToken, setAccessToken] = useState("");
   const [artistID, setID] = useState(null);
-  const [tracks, setTracks] = useState([]);
+  const [tracks, setTracks] = useState<any[]>([]);
   const navigate = useNavigate();
   const nameRef = useRef<HTMLInputElement>(null);
 

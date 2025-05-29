@@ -11,7 +11,7 @@ import { ClientID, ClientSecretKey } from "./App";
 
 function TrackItem() {
   //key fix: setting this to null instead of an array.
-  const [information, setInformation] = useState(null);
+  const [information, setInformation] = useState<any>(null);
   const { id } = useParams();
 
   const [accessToken, setAccessToken] = useState("");
